@@ -1,0 +1,27 @@
+---
+
+- name: Ansible Exercise Play
+  hosts: web
+  remote_user: ubuntu
+
+  # become: true
+  # become_method: sudo
+  # become_user: root
+
+  vars:
+    ansible_host_key_checking: false
+  
+  pre_tasks:
+    - name: Wait for the host to become alive
+      wait_for_connection:
+        timeout: 60
+
+    - name: Verify Python 3 is present
+      become: true
+      apt:
+        name: python3
+        update_cache: true
+
+  roles:
+    - configure
+    - deploy

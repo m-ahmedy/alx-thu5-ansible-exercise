@@ -1,0 +1,20 @@
+---
+- name: Create app directory
+  file:
+    path: ~/app
+    state: directory
+
+- name: Copy app.js to the directory
+  copy:
+    src: app.js
+    dest: ~/app/app.js
+
+- name: Run the app with PM2
+  shell: |
+    cd ~/app
+    pm2 start app.js
+  register: run_app
+
+- name: Print message
+  debug: 
+    msg: "{{ run_app.stdout_lines }}"

@@ -1,0 +1,22 @@
+---
+- name: Installing Node.js LTS
+  become: true
+  shell: |
+    curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
+    sudo apt-get install -y nodejs
+
+- name: Verify Node.js installation
+  shell: |
+    echo Node.js $(node --version)
+    echo NPM $(npm --version)
+  register: verification_output
+
+- name: Print message
+  debug:
+    msg: "{{ verification_output.stdout_lines }}"
+
+- name: Install PM2
+  become: true
+  npm:
+    name: pm2
+    global: true
